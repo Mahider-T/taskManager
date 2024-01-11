@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/oogway/taskManager/taskManager.csproj": {}
+    "/home/oogway/TaskManager/taskManager.csproj": {}
   },
   "projects": {
-    "/home/oogway/taskManager/taskManager.csproj": {
+    "/home/oogway/TaskManager/taskManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/oogway/taskManager/taskManager.csproj",
+        "projectUniqueName": "/home/oogway/TaskManager/taskManager.csproj",
         "projectName": "taskManager",
-        "projectPath": "/home/oogway/taskManager/taskManager.csproj",
+        "projectPath": "/home/oogway/TaskManager/taskManager.csproj",
         "packagesPath": "/home/oogway/.nuget/packages/",
-        "outputPath": "/home/oogway/taskManager/obj/",
+        "outputPath": "/home/oogway/TaskManager/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/oogway/.nuget/NuGet/NuGet.Config"
@@ -41,6 +41,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.23.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
