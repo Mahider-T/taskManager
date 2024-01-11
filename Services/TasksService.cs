@@ -1,15 +1,20 @@
 using TaskManager.Models;
+using TaskManager.DTOs;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using AutoMapper;
 
 namespace TaskManager.Services;
 
 public class TasksService {
 
     private readonly IMongoCollection<Tasks> _tasksCollection;
+    private readonly IMapper _mapper;
 
     public TasksService(
+        IMapper mapper,
         IOptions<TaskManagerDatabaseSettings> taskManagerDatabaseSettings) {
+            _mapper = mapper;
          var mongoClient = new MongoClient(
             taskManagerDatabaseSettings.Value.ConnectionString);
 
@@ -18,6 +23,7 @@ public class TasksService {
 
         _tasksCollection = mongoDatabase.GetCollection<Tasks>(
             taskManagerDatabaseSettings.Value.TasksCollectionName);
+            
     }
     public async Task<List<Tasks>> GetAsync() =>
         await _tasksCollection.Find(_ => true).ToListAsync();
@@ -28,8 +34,13 @@ public class TasksService {
     public async Task CreateAsync(Tasks newTasks) =>
         await _tasksCollection.InsertOneAsync(newTasks);
 
-    public async Task UpdateAsync(string id, Tasks updatedTasks) =>
-        await _tasksCollection.ReplaceOneAsync(x => x.Id == id, updatedTasks);
+    //Make sure the below method works properly give the use of an automapper.
+    public async Task UpdateAsync(string id, updateTaskDTO updatedTask) {
+        Tasks task = _mapper.Map<Tasks>(updatedTask);
+
+        await _tasksCollection.ReplaceOneAsync(x => x.Id == id, task);
+    }
+        
 
     public async Task RemoveAsync(string id) =>
         await _tasksCollection.DeleteOneAsync(x => x.Id == id);

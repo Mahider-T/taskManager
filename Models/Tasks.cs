@@ -12,7 +12,7 @@ public class Tasks {
 
     public string name { get; set; } = null!;
 
-    public TaskStatus Status { get; set; }
+    public StatusOfTask Status { get; set; }
 
     public DateTime createdAt { get; set; }
     public DateTime dueDate { get ;set; } 
@@ -20,7 +20,7 @@ public class Tasks {
     public string userId { get; set; } = null!;
 
     public Tasks() {
-        Status = TaskStatus.Todo;
+        Status = StatusOfTask.Todo;
         createdAt = DateTime.UtcNow;
         dueDate = DateTime.UtcNow.AddDays(1);
 
