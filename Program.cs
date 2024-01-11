@@ -11,6 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<TaskManagerDatabaseSettings>(
     builder.Configuration.GetSection("TaskManagerDatabase"));
 
+//Register 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
