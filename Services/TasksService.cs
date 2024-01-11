@@ -31,8 +31,16 @@ public class TasksService {
     public async Task<Tasks?> GetAsync(string id) =>
         await _tasksCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-    public async Task CreateAsync(Tasks newTasks) =>
-        await _tasksCollection.InsertOneAsync(newTasks);
+    public async Task<Tasks> CreateAsync(CreateTaskDTO newTask){
+
+        // Tasks task = _mapper.Map<Tasks>(newTask);
+        Tasks task = newTask.MapToTasks();
+        await _tasksCollection.InsertOneAsync(task);
+        return task;
+        
+
+    }
+        
 
     //Make sure the below method works properly give the use of an automapper.
     public async Task UpdateAsync(string id, updateTaskDTO updatedTask) {

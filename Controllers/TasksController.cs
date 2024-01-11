@@ -3,6 +3,7 @@ using TaskManager.Services;
 using TaskManager.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
+using DnsClient.Protocol;
 
 namespace TaskManager.Controllers;
 
@@ -35,11 +36,11 @@ public class TasksController : ControllerBase {
     }
 
     [HttpPost]
-    public async Task<ActionResult<Task>> PostTask(Tasks newTask) {
+    public async Task<ActionResult<Task>> PostTask(CreateTaskDTO newTask) {
 
-        await _tasksService.CreateAsync(newTask); 
+        var task = await _tasksService.CreateAsync(newTask); 
 
-        return CreatedAtAction(nameof(GetTaskById), new {newTask.Id}, newTask);
+        return CreatedAtAction(nameof(GetTaskById), new {task.Id}, task);
     }
 
     [HttpPut("{id}")]
