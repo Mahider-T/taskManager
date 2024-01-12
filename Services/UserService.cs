@@ -71,7 +71,7 @@ public class UserService {
 
         if(userExists == null) {return null;}
 
-        var theToken = await _tokenService.SaveTokenAsync(email, password);
+        var theToken = await _tokenService.SaveTokenAsync(email);
 
         return theToken;
 

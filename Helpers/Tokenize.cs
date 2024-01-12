@@ -1,17 +1,19 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualBasic;
 public class Tokenize {
-    private const string SecretKey = "TokenizerSecretKey";
+    
+    static string  secretKey = "Canthisnotbemysecretkeynowitislongenoughpleasesirthisisalot.";
 
-    public static string GenerateToken(string userId, string email) {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
+    public static string GenerateToken(string email) {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
-            new Claim("userId", userId),
             new Claim("email", email)
         };
         var token = new JwtSecurityToken(
@@ -27,7 +29,7 @@ public class Tokenize {
 
     public static ClaimsPrincipal VerifyToken(string token) {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(SecretKey);
+        var key = Encoding.UTF8.GetBytes(secretKey);
 
         var validationParameters = new TokenValidationParameters
         {

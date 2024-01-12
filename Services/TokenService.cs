@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TaskManager.Models;
+using TaskManager.Helpers;
 
 namespace TaskManager.Services;
 
@@ -15,17 +16,19 @@ public class TokenService {
             taskManagerDatabaseSettings.Value.DatabaseName);
 
         _tokenCollection = mongoDatabase.GetCollection<Tokens>(
-            taskManagerDatabaseSettings.Value.UsersCollectionName);
+            taskManagerDatabaseSettings.Value.TokensCollectionName);
     }
 
 
-    public async Task<Tokens> SaveTokenAsync(string email, string token) {
+    public async Task<Tokens> SaveTokenAsync(string email) {
 
         Tokens theNewToken = new Tokens();
         theNewToken.email = email;
-        theNewToken.Token = token;
+        theNewToken.Token = Tokenize.GenerateToken(email);
 
         await _tokenCollection.InsertOneAsync(theNewToken);
+
+        Console.WriteLine(theNewToken);
 
         return theNewToken;
     }

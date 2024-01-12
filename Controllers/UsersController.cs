@@ -15,12 +15,12 @@ public class UserController : ControllerBase {
         _userService = userService;
     }
 
-    [HttpGet]
+    [HttpGet("getUsers")]
     public async Task<ActionResult<List<User>>> GetUsers() {
 
         return await _userService.GetUsers();
     }
-    [HttpGet("{id}")]
+    [HttpGet("getUsers/{id}")]
     public async Task<ActionResult<User>> GetUserById(string id) {
 
         return await _userService.GetUserAsync(id);
@@ -40,7 +40,7 @@ public class UserController : ControllerBase {
         
     }
 
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<ActionResult<string>> LoginUser(string email, string password) {
 
         var loginResult = await _userService.LoginUser(email, password);
