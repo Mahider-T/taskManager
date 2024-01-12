@@ -10,16 +10,13 @@ public class CreateUserDTO {
 
     public User MapToUser() {
 
-        var user = new User
+        return new User
         {
             name = this.name,
             email = this.email,
             password = this.password
             
         };
-
-        Console.Write(user.email);
-
-        return user; 
+ 
     }
 }

@@ -4,7 +4,7 @@ namespace TaskManager.Helpers;
 
 public class PasswordHasher {
 
-    public string HashPassword(string password) {
+    public static string HashPassword(string password) {
 
         string salt = BCrypt.Net.BCrypt.GenerateSalt();
 
@@ -13,7 +13,7 @@ public class PasswordHasher {
         return hashedPassword;
     }
 
-    public bool verifyPassword(string password, string hashedPassword) {
+    public static bool verifyPassword(string password, string hashedPassword) {
         return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
     }
 

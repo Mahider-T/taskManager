@@ -1,18 +1,24 @@
 using MongoDB.Driver;
 using TaskManager.Models;
+using TaskManager.Helpers;
+// using TaskManager.Services;
 using TaskManager.DTOs;
 using Microsoft.Extensions.Options;
-using TaskManager.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using ZstdSharp.Unsafe;
 using Amazon.Runtime;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace TaskManager.Services;
 
 public class UserService {
     private readonly IMongoCollection<User> _usersCollection;
+    private readonly TokenService _tokenService;
 
-    public UserService(IOptions<TaskManagerDatabaseSettings> taskManagerDatabaseSettings) {
+    public UserService(
+        IOptions<TaskManagerDatabaseSettings> taskManagerDatabaseSettings,
+        TokenService tokenService) {
+        _tokenService = tokenService;
         var mongoClient = new MongoClient(
             taskManagerDatabaseSettings.Value.ConnectionString);
 
@@ -28,18 +34,22 @@ public class UserService {
         return await _usersCollection.Find(_ => true).ToListAsync(); 
 
     }
-    public async Task<User?> CreateAsync(CreateUserDTO newUser){
+    public async Task<User?> CreateAsync(User newUser){
 
         // Tasks task = _mapper.Map<Tasks>(newTask);
+        // User user  = newUser.MapToUser();
+        var userExists = await _usersCollection.Find(user => user.email == newUser.email).FirstOrDefaultAsync();
 
-        PasswordHasher passwordHasher = new PasswordHasher();
-        User user = newUser.MapToUser();
+        if (userExists != null) {
+            return null;
+        }
+        else{
+            newUser.password = PasswordHasher.HashPassword(newUser.password); 
+            await _usersCollection.InsertOneAsync(newUser);
 
-        if( user.password is null ) {return null;}
-        user.password = passwordHasher.HashPassword(user.password);
-        Console.WriteLine(user);
-        await _usersCollection.InsertOneAsync(user);
-        return user;
+            return newUser;
+        }
+        
     }
 
     public async Task<User> GetUserAsync(string id) {
@@ -53,7 +63,18 @@ public class UserService {
 
         return await _usersCollection.UpdateOneAsync(filter, update);
 
-        
+    }
+
+    public async Task<Tokens?> LoginUser(string email, string password){ 
+
+        var userExists = _usersCollection.Find(user => user.email == email);
+
+        if(userExists == null) {return null;}
+
+        var theToken = await _tokenService.SaveTokenAsync(email, password);
+
+        return theToken;
+
     }
 
 }

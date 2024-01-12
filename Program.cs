@@ -1,3 +1,4 @@
+using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using TaskManager.Helpers;
@@ -20,6 +21,7 @@ builder.Services.Configure<TaskManagerDatabaseSettings>(
 //Register Tasksservices
 builder.Services.AddSingleton<TasksService>();
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<TokenService>();
 
 
 builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>

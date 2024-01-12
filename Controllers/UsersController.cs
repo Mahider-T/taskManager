@@ -27,14 +27,26 @@ public class UserController : ControllerBase {
     }
 
     [HttpPost]
-    public async Task<ActionResult<User>> CreateUserAsync(CreateUserDTO newUser) {
+    public async Task<ActionResult<User>> CreateUserAsync(User newUser) {
 
         
-        var user = await _userService.CreateAsync(newUser);
-        if (user is not null) {return CreatedAtAction(nameof(GetUserById), new {user.Id}, user);}
-
-        return BadRequest();
+       var result =  await _userService.CreateAsync(newUser);
         
+        if (result is null) {
+            return BadRequest("User with this email already exists!");
+        }
+
+        return Ok("User created successfully!");
+        
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<string>> LoginUser(string email, string password) {
+
+        var loginResult = await _userService.LoginUser(email, password);
+        if(loginResult == null) {return BadRequest("Terrible request my friend.");}
+
+        return Ok(loginResult);
     }
 }
 
