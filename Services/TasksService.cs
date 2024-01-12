@@ -14,7 +14,7 @@ public class TasksService {
     public TasksService(
         IMapper mapper,
         IOptions<TaskManagerDatabaseSettings> taskManagerDatabaseSettings) {
-            _mapper = mapper;
+        _mapper = mapper;
          var mongoClient = new MongoClient(
             taskManagerDatabaseSettings.Value.ConnectionString);
 

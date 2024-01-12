@@ -21,7 +21,7 @@ public class Tasks {
     public string userId { get; set; } = null!;
 
     public Tasks() {
-        Status = StatusOfTask.Todo;
+        Status = StatusOfTask.Underway;
         createdAt = DateTime.UtcNow;
         dueDate = DateTime.UtcNow.AddDays(1);
 
