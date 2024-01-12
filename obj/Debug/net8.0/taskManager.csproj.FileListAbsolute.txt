@@ -46,3 +46,4 @@
 /home/oogway/TaskManager/obj/Debug/net8.0/taskManager.pdb
 /home/oogway/TaskManager/obj/Debug/net8.0/taskManager.genruntimeconfig.cache
 /home/oogway/TaskManager/obj/Debug/net8.0/ref/taskManager.dll
+/home/oogway/TaskManager/bin/Debug/net8.0/BCrypt.Net-Next.dll

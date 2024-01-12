@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "iw74TkXIX18X7KNqROvBAm8wBZIhyzWcP73vBEZnCGMjFVAhl+Xz2CQfhmotKfRtAzHXN2Ohd3zNMIyiXvJGvg==",
+  "dgSpecHash": "s6uhovlX6IzTGK0X7WkHvGfd2I/F8JS68JWTC0yG0DLUQU1AudMTSc47B3fW6SCXlcFQM6Sxc92Ao7WopN1haQ==",
   "success": true,
   "projectFilePath": "/home/oogway/TaskManager/taskManager.csproj",
   "expectedPackageFiles": [
     "/home/oogway/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/home/oogway/.nuget/packages/awssdk.core/3.7.100.14/awssdk.core.3.7.100.14.nupkg.sha512",
     "/home/oogway/.nuget/packages/awssdk.securitytoken/3.7.100.14/awssdk.securitytoken.3.7.100.14.nupkg.sha512",
+    "/home/oogway/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/home/oogway/.nuget/packages/dnsclient/1.6.1/dnsclient.1.6.1.nupkg.sha512",
     "/home/oogway/.nuget/packages/microsoft.aspnetcore.openapi/8.0.0/microsoft.aspnetcore.openapi.8.0.0.nupkg.sha512",
     "/home/oogway/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",

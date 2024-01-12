@@ -19,6 +19,9 @@ builder.Services.Configure<TaskManagerDatabaseSettings>(
 
 //Register Tasksservices
 builder.Services.AddSingleton<TasksService>();
+builder.Services.AddSingleton<UserService>();
+
+
 builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
     {
         cfg.AddProfile(new MappingProfile());
@@ -26,11 +29,11 @@ builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
 
 
 // builder.Services.AddAutoMapper(typeof(MappingProfile));
-MapperConfiguration config = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new MappingProfile());
-});
-IMapper mapper = config.CreateMapper();
+// MapperConfiguration config = new MapperConfiguration(cfg =>
+// {
+//     cfg.AddProfile(new MappingProfile());
+// });
+// IMapper mapper = config.CreateMapper();
 
 
 var app = builder.Build();
