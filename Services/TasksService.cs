@@ -37,16 +37,40 @@ public class TasksService {
         Tasks task = newTask.MapToTasks();
         await _tasksCollection.InsertOneAsync(task);
         return task;
-        
-
+    
     }
         
 
     //Make sure the below method works properly give the use of an automapper.
     public async Task UpdateAsync(string id, updateTaskDTO updatedTask) {
-        Tasks task = _mapper.Map<Tasks>(updatedTask);
+        // Tasks task = _mapper.Map<Tasks>(updatedTask);
+        // Tasks task = updatedTask.MapToTasks();
+      var updateDefinitionBuilder = Builders<Tasks>.Update;
+        var updateDefinitionList = new List<UpdateDefinition<Tasks>>();
 
-        await _tasksCollection.ReplaceOneAsync(x => x.Id == id, task);
+        if (updatedTask.name != null)
+        {
+            updateDefinitionList.Add(updateDefinitionBuilder.Set(x => x.name, updatedTask.name));
+        }
+
+        if (updatedTask.Status.HasValue)
+        {
+            updateDefinitionList.Add(updateDefinitionBuilder.Set(x => x.Status, updatedTask.Status));
+        }
+
+        if (updatedTask.dueDate.HasValue)
+        {
+            updateDefinitionList.Add(updateDefinitionBuilder.Set(x => x.dueDate, updatedTask.dueDate.Value));
+        }
+
+        var updateDefinition = updateDefinitionBuilder.Combine(updateDefinitionList);
+
+        if (updateDefinitionList.Count > 0)
+        {
+            var filter = Builders<Tasks>.Filter.Eq(x => x.Id, id);
+            await _tasksCollection.UpdateOneAsync(filter, updateDefinition);
+        }
+
     }
         
 

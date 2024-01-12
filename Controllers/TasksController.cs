@@ -53,8 +53,9 @@ public class TasksController : ControllerBase {
         }
 
         await _tasksService.UpdateAsync(id, updatedTask);
+        var updatedTaskData = await _tasksService.GetAsync(id);
 
-        return NoContent();
+        return Ok(updatedTaskData);
 
     }
 
