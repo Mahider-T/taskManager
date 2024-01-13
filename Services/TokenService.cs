@@ -20,17 +20,18 @@ public class TokenService {
     }
 
 
-    public async Task<Tokens> SaveTokenAsync(string email) {
+    public Tokens GetToken(string email) {
 
         Tokens theNewToken = new Tokens();
         theNewToken.email = email;
         theNewToken.Token = Tokenize.GenerateToken(email);
 
-        await _tokenCollection.InsertOneAsync(theNewToken);
-
-        Console.WriteLine(theNewToken);
-
         return theNewToken;
+    }
+
+    public async Task<Tokens> SaveTokenAsync(Tokens token) {
+        await _tokenCollection.InsertOneAsync(token);
+        return token;
     }
 
     public Tokens FindToken(string email)

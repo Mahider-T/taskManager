@@ -44,8 +44,9 @@ public class UserController : ControllerBase {
     public async Task<ActionResult<string>> LoginUser(string email, string password) {
 
         var loginResult = await _userService.LoginUser(email, password);
-        if(loginResult == null) {return BadRequest("Terrible request my friend.");}
-
+        // Console.WriteLine(password);
+        // Console.WriteLine(loginResult);
+        if(loginResult == null) {return BadRequest("Wrong credentials.");}
         return Ok(loginResult);
     }
 }

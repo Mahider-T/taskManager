@@ -4,6 +4,8 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualBasic;
+
+namespace TaskManager.Helpers;
 public class Tokenize {
     
     static string  secretKey = "Canthisnotbemysecretkeynowitislongenoughpleasesirthisisalot.";

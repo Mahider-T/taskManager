@@ -1,8 +1,7 @@
 using MongoDB.Driver;
 using TaskManager.Models;
 using TaskManager.Helpers;
-// using TaskManager.Services;
-using TaskManager.DTOs;
+using TaskManager.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using ZstdSharp.Unsafe;
@@ -65,15 +64,28 @@ public class UserService {
 
     }
 
-    public async Task<Tokens?> LoginUser(string email, string password){ 
+    public async Task<string?> LoginUser(string email, string password){ 
 
-        var userExists = _usersCollection.Find(user => user.email == email);
+        User userExists = await _usersCollection.Find(user => user.email == email).FirstOrDefaultAsync();
+
+        // Console.WriteLine("Email is : " + email);
+        // Console.WriteLine("Password is : " + password);
+        
+        Console.WriteLine("Must be false => " + userExists == null);
 
         if(userExists == null) {return null;}
 
-        var theToken = await _tokenService.SaveTokenAsync(email);
+        Console.WriteLine("Must be false => " + userExists.password != password);
 
-        return theToken;
+        Boolean passwordMatches = PasswordHasher.verifyPassword(password, userExists.password);
+
+        if (!passwordMatches) {return null;}
+
+        Tokens theToken = _tokenService.GetToken(email);
+
+        Console.WriteLine("The token is => " + theToken);
+
+        return theToken.Token;
 
     }
 
