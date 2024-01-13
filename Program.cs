@@ -1,5 +1,6 @@
 using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using TaskManager.Helpers;
 using TaskManager.Models;
@@ -22,6 +23,18 @@ builder.Services.Configure<TaskManagerDatabaseSettings>(
 builder.Services.AddSingleton<TasksService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<TokenService>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
+{
+    options.Cookie.Name = "AuthToken"; // Set to your cookie name
+    options.ExpireTimeSpan = TimeSpan.FromHours(1); // Set to match your token expiration
+});
 
 
 builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
@@ -48,6 +61,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
 

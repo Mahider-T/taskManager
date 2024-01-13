@@ -47,6 +47,14 @@ public class UserController : ControllerBase {
         // Console.WriteLine(password);
         // Console.WriteLine(loginResult);
         if(loginResult == null) {return BadRequest("Wrong credentials.");}
+
+        var expirationDate = DateTime.UtcNow.AddHours(1); 
+
+         Response.Cookies.Append("AuthToken", loginResult, new Microsoft.AspNetCore.Http.CookieOptions
+        {
+            HttpOnly = true,
+            Expires = expirationDate,
+        });
         return Ok(loginResult);
     }
 }

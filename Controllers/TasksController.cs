@@ -4,6 +4,7 @@ using TaskManager.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using DnsClient.Protocol;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskManager.Controllers;
 
@@ -17,8 +18,11 @@ public class TasksController : ControllerBase {
         _tasksService = tasksService;
     }
 
-    
+    //Interesting fact : [Authorize] does not return 401(UnAuthorized) or 403(Forbidden)
+    //when an UnAuthenticatd user tries to access a resource but rather a 404(NotFound)
+    //for security measures.
     [HttpGet]
+    [Authorize]
     public async Task<List<Tasks>> GetTask() {
 
         return await _tasksService.GetAsync();
@@ -26,6 +30,7 @@ public class TasksController : ControllerBase {
     } 
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<Tasks>> GetTaskById(string id) {
         var theTask = await _tasksService.GetAsync(id);
 
