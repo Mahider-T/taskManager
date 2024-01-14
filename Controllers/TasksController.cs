@@ -44,16 +44,18 @@ public class TasksController : ControllerBase {
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<Task>> PostTask(CreateTaskDTO newTask) {
+    public async Task<ActionResult<Task>> CreateTask(CreateTaskDTO newTask) {
 
-        ClaimsPrincipal? principal = Thread.CurrentPrincipal as ClaimsPrincipal;
-        string? email = principal?.FindFirst(ClaimTypes.Email)?.Value;
+        var principal = HttpContext.User;
+        var claims = principal.Claims;
+        var emailClaim = principal.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")!;
+        string email = emailClaim.Value;
         Console.WriteLine(email);
 
         var task = await _tasksService.CreateAsync(newTask, email!); 
 
-        return Ok("Task created successfully!");
-        // return CreatedAtAction(nameof(GetTaskById), new {task.Id}, task);
+        // return Ok("Task created successfully!");
+        return CreatedAtAction(nameof(GetTaskById), new {task.Id}, task);
     }
 
     [HttpPut("{id}")]
