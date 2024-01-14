@@ -61,6 +61,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<TokenValidationMiddleware>("AuthToken", "Canthisnotbemysecretkeynowitislongenoughpleasesirthisisalot.");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

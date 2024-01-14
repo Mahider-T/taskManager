@@ -31,12 +31,20 @@ public class TasksService {
     public async Task<Tasks?> GetAsync(string id) =>
         await _tasksCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-    public async Task<Tasks> CreateAsync(CreateTaskDTO newTask){
+    public async Task<Tasks> CreateAsync(CreateTaskDTO newTask, string email){
 
-        // Tasks task = _mapper.Map<Tasks>(newTask);
-        Tasks task = newTask.MapToTasks();
-        await _tasksCollection.InsertOneAsync(task);
-        return task;
+        var tasks = new Tasks
+        {
+            name = newTask.name,
+            Status = newTask.Status ?? StatusOfTask.Todo, // Use default if Status is null
+            dueDate = newTask.dueDate ?? DateTime.UtcNow.AddDays(1), // Use default if dueDate is null
+            createdAt = DateTime.UtcNow
+        };
+
+        // Tasks task = newTask.MapToTasks();
+        tasks.userId = email;
+        await _tasksCollection.InsertOneAsync(tasks);
+        return tasks;
     
     }
         

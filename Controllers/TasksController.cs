@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using DnsClient.Protocol;
 using Microsoft.AspNetCore.Authorization;
+using Amazon.Auth.AccessControlPolicy;
+using System.Security.Claims;
 
 namespace TaskManager.Controllers;
 
@@ -41,14 +43,21 @@ public class TasksController : ControllerBase {
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<Task>> PostTask(CreateTaskDTO newTask) {
 
-        var task = await _tasksService.CreateAsync(newTask); 
+        ClaimsPrincipal? principal = Thread.CurrentPrincipal as ClaimsPrincipal;
+        string? email = principal?.FindFirst(ClaimTypes.Email)?.Value;
+        Console.WriteLine(email);
 
-        return CreatedAtAction(nameof(GetTaskById), new {task.Id}, task);
+        var task = await _tasksService.CreateAsync(newTask, email!); 
+
+        return Ok("Task created successfully!");
+        // return CreatedAtAction(nameof(GetTaskById), new {task.Id}, task);
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<ActionResult<Task>> UpdateTask(string id, updateTaskDTO updatedTask) {
 
         var theTask = await _tasksService.GetAsync(id);
@@ -65,6 +74,7 @@ public class TasksController : ControllerBase {
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<ActionResult<Tasks>> DeleteTask(String id) {
 
         var theTask = await _tasksService.GetAsync(id);

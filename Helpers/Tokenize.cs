@@ -35,10 +35,9 @@ public class Tokenize {
 
         var validationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key)
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateAudience = false,
+            ValidateIssuer = false
         };
 
         SecurityToken validatedToken;
