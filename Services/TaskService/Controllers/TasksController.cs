@@ -75,6 +75,8 @@ public class TasksController : ControllerBase {
         await _tasksService.UpdateAsync(id, updatedTask);
         var updatedTaskData = await _tasksService.GetAsync(id);
 
+        await _publishEndpoint.Publish(updatedTask);
+
         return Ok(updatedTaskData);
 
     }
@@ -88,7 +90,7 @@ public class TasksController : ControllerBase {
         if(theTask is null) {
             return NotFound("Could not find a task with the given Id");
         }
-
+        await _publishEndpoint.Publish(id);
         return Ok("Task deleted successfully.");
 
     }

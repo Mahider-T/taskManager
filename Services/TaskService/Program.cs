@@ -36,16 +36,16 @@ builder.Services.AddMassTransit(x =>
     //     o.UseBusOutbox();
     // });
 
-    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("task", false));
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("tasks", false));
 
     // Setup RabbitMQ Endpoint
     x.UsingRabbitMq((context, cfg) =>
     {
 
-        cfg.Host(builder.Configuration["RabbitMq:Host"], "/", host =>
+        cfg.Host("localhost", "/", host =>
         {
-            host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
-            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
+            host.Username("guest");
+            host.Password("guest");
         });
         cfg.ConfigureEndpoints(context);
     });
