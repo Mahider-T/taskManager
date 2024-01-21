@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using TaskManager.Helpers;
 using TaskManager.Models;
 using TaskManager.Services;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,32 @@ builder.Services.Configure<TaskManagerDatabaseSettings>(
 builder.Services.AddSingleton<TasksService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<TokenService>();
+
+builder.Services.AddMassTransit(x =>
+{
+    // Add outbox
+    // x.AddEntityFrameworkOutbox<AnimalDbContext>(o =>
+    // {
+    //     o.QueryDelay = TimeSpan.FromSeconds(10);
+
+    //     o.UseSqlServer();
+    //     o.UseBusOutbox();
+    // });
+
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("animal", false));
+
+    // Setup RabbitMQ Endpoint
+    x.UsingRabbitMq((context, cfg) =>
+    {
+
+        cfg.Host(builder.Configuration["RabbitMq:Host"], "/", host =>
+        {
+            host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
+            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
+        });
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddAuthentication(options =>
 {

@@ -7,6 +7,7 @@ using DnsClient.Protocol;
 using Microsoft.AspNetCore.Authorization;
 using Amazon.Auth.AccessControlPolicy;
 using System.Security.Claims;
+using MassTransit;
 
 namespace TaskManager.Controllers;
 
@@ -15,9 +16,11 @@ namespace TaskManager.Controllers;
 public class TasksController : ControllerBase {
 
     private readonly TasksService _tasksService;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public TasksController(TasksService tasksService) {
+    public TasksController(TasksService tasksService, IPublishEndpoint publishEndpoint) {
         _tasksService = tasksService;
+        _publishEndpoint = publishEndpoint; 
     }
 
     //Interesting fact : [Authorize] does not return 401(UnAuthorized) or 403(Forbidden)
@@ -54,6 +57,7 @@ public class TasksController : ControllerBase {
 
         var task = await _tasksService.CreateAsync(newTask, email!); 
 
+        await _publishEndpoint.Publish(newTask);
         // return Ok("Task created successfully!");
         return CreatedAtAction(nameof(GetTaskById), new {task.Id}, task);
     }
