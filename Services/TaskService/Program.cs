@@ -36,7 +36,7 @@ builder.Services.AddMassTransit(x =>
     //     o.UseBusOutbox();
     // });
 
-    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("animal", false));
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("task", false));
 
     // Setup RabbitMQ Endpoint
     x.UsingRabbitMq((context, cfg) =>
