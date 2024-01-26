@@ -7,6 +7,12 @@ namespace NotificationService.Models;
 
 public class Tasks {
 
+    public enum StatusOfTask{
+        Todo,
+        Underway,
+        Completed
+    }
+
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; } = null!;

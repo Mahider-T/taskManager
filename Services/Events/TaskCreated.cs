@@ -1,5 +1,11 @@
 namespace Events;
 public class TaskCreated {
+
+    public enum StatusOfTask{
+        Todo,
+        Underway,
+        Completed
+    }
     public string Id { get; set; } 
 
     public string name { get; set; } 

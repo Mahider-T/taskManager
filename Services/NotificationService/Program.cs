@@ -8,10 +8,10 @@ builder.Services.Configure<TaskManagerDatabaseSettings>(
     builder.Configuration.GetSection("TaskNotificationDatabase"));
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient<AnimalServiceHttpClient>().AddPolicyHandler(GetPolicy());
+builder.Services.AddHttpClient<TaskServiceHttpClient>().AddPolicyHandler(GetPolicy());
 builder.Services.AddMassTransit(x => 
 {
-    x.AddConsumersFromNamespaceContaining<AnimalCreatedConsumer>();
+    x.AddConsumersFromNamespaceContaining<TaskCreatedConsumer>();
 
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("notification", false));
 

@@ -12,20 +12,20 @@ public class DbInitializer
         await DB.InitAsync("Task", MongoClientSettings
                     .FromConnectionString("mongodb://localhost:27017"));
 
-        await DB.Index<Animal>()
-            .Key(x => x.Type, KeyType.Text)
-            .Key(x => x.Sex, KeyType.Text)
-            .CreateAsync();
+        // await DB.Index<Animal>()
+        //     .Key(x => x.Type, KeyType.Text)
+        //     .Key(x => x.Sex, KeyType.Text)
+        //     .CreateAsync();
 
-        var count = await DB.CountAsync<Animal>();
+        var count = await DB.CountAsync<Tasks>();
 
         using var scope = app.Services.CreateScope();
 
-        var httpClient = scope.ServiceProvider.GetRequiredService<AnimalServiceHttpClient>();
+        var httpClient = scope.ServiceProvider.GetRequiredService<TaskServiceHttpClient>();
 
-        var animals = await httpClient.GetAnimalsForSearchDb();
-        Console.WriteLine(animals.Count + " returned from the animal service");
+        var tasks = await httpClient.GetTasksForNotificationDB();
+        Console.WriteLine(tasks.Count + " returned from the tasks service");
 
-        if (animals.Count > 0) await DB.SaveAsync(animals);
+        if (tasks.Count > 0) await DB.SaveAsync(tasks);
     }
 }

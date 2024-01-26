@@ -3,13 +3,13 @@ using MassTransit;
 using MongoDB.Entities;
 
 namespace SearchService;
-public class AnimalCreatedConsumer : IConsumer<TaskCreated>
+public class TaskCreatedConsumer : IConsumer<TaskCreated>
 {
     
-    public async Task Consume(ConsumeContext<AnimalCreated> taskCreated)
+    public async Task Consume(ConsumeContext<TaskCreated> taskCreated)
     {
         Console.WriteLine("Consuming task created " + taskCreated.Message.Id);
 
-        await Tasks.SaveAsync();
+        await taskCreated.SaveAsync();
     }
 }
