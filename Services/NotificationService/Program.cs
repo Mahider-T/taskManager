@@ -1,11 +1,19 @@
+using NotificationService.Services;
+using NotificationService.Consumers;
+using Polly;
+using Polly.Extensions.Http;
+using System.Net;
+using MassTransit;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.Configure<TaskManagerDatabaseSettings>(
-    builder.Configuration.GetSection("TaskNotificationDatabase"));
+// builder.Services.Configure<TaskManagerDatabaseSettings>(
+//     builder.Configuration.GetSection("TaskNotificationDatabase"));
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<TaskServiceHttpClient>().AddPolicyHandler(GetPolicy());
@@ -34,17 +42,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.Lifetime.ApplicationStarted.Register(async () =>
-{
-    try
-    {
-        await DbInitializer.InitDb(app);
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e);
-    }
-});
+// app.Lifetime.ApplicationStarted.Register(async () =>
+// {
+//     try
+//     {
+//         await DbInitializer.InitDb(app);
+//     }
+//     catch (Exception e)
+//     {
+//         Console.WriteLine(e);
+//     }
+// });
 
 app.UseHttpsRedirection();
 

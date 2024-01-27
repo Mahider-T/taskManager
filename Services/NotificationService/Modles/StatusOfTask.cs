@@ -1,7 +1,7 @@
-namespace NotificationService.models;
+// namespace NotificationService.models;
 
-public enum StatusOfTask {
-    Todo,
-    Underway,
-    Completed
-}
+// public enum StatusOfTask {
+//     Todo,
+//     Underway,
+//     Completed
+// }

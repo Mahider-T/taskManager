@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Amazon.Auth.AccessControlPolicy;
 using System.Security.Claims;
 using MassTransit;
+using Events;
 
 namespace TaskManager.Controllers;
 
@@ -55,9 +56,17 @@ public class TasksController : ControllerBase {
         string email = emailClaim.Value;
         Console.WriteLine(email);
 
-        var task = await _tasksService.CreateAsync(newTask, email!); 
+        var task = await _tasksService.CreateAsync(newTask, email!);
+        TaskCreated taskCreated = new TaskCreated{
+            Id = task.Id,
+            name = task.name,
+            Status = (Events.TaskCreated.StatusOfTask)task.Status,
+            createdAt = task.createdAt,
+            dueDate = task.dueDate,
+            userId  = task.userId
+        };
 
-        await _publishEndpoint.Publish(newTask);
+        await _publishEndpoint.Publish(taskCreated);
         // return Ok("Task created successfully!");
         return CreatedAtAction(nameof(GetTaskById), new {task.Id}, task);
     }

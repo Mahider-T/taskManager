@@ -1,7 +1,7 @@
 using MongoDB.Entities;
 // using TaskService;
 
-namespace SearchService.Services
+namespace NotificationService.Services
 {
     public class TaskServiceHttpClient
     {
