@@ -10,13 +10,14 @@ public class Tokenize {
     
     static string  secretKey = "Canthisnotbemysecretkeynowitislongenoughpleasesirthisisalot.";
 
-    public static string GenerateToken(string email) {
+    public static string GenerateToken(string email, string name) {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
-            new Claim("email", email)
+            new Claim("email", email),
+            new Claim("name", name)
         };
         var token = new JwtSecurityToken(
             claims : claims,

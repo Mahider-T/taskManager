@@ -60,7 +60,7 @@ public class TaskCreatedConsumer : IConsumer<TaskCreated>
                     <p><span class='task-name'>Task name</span>: {name}</p>
                     <p class='due-date'><span class='task-name'>Due date</span>: {dueDate}</p>
                     <div class='email-footer'>
-                        <p>Best regards,</p>
+                        <p>With regards,</p>
                         <p>Task Manager Corp.</p>
                     </div>
                 </div>

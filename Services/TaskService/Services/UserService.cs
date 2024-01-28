@@ -81,7 +81,9 @@ public class UserService {
 
         if (!passwordMatches) {return null;}
 
-        Tokens theToken = _tokenService.GetToken(email);
+        string name = userExists.name;
+
+        Tokens theToken = _tokenService.GetToken(email, name);
 
         // Console.WriteLine("The token is => " + theToken);
 

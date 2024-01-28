@@ -20,11 +20,11 @@ public class TokenService {
     }
 
 
-    public Tokens GetToken(string email) {
+    public Tokens GetToken(string email, string name) {
 
         Tokens theNewToken = new Tokens();
         theNewToken.email = email;
-        theNewToken.Token = Tokenize.GenerateToken(email);
+        theNewToken.Token = Tokenize.GenerateToken(email, name);
 
         return theNewToken;
     }
