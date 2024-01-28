@@ -9,13 +9,14 @@ public class SendEmail{
     public static void  SendEmailMethod(string email, string subject, string messageBody) {
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("TaskManagerTeam", "mahdertekola@gmail.com"));
+        message.To.Add(new MailboxAddress("", email));
         message.Subject = subject;
-        message.Body = new TextPart("plain"){Text = messageBody};
+        message.Body = new TextPart("html"){Text = messageBody};
 
          using (var client = new SmtpClient())
         {
             client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            client.Authenticate("mahdertekola@gmail.com", "");
+            client.Authenticate("noreply.TaskManager1@gmail.com", "zfxa tlkz vzcd sius ");
             client.Send(message);
             client.Disconnect(true);
         }
