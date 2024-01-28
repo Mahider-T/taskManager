@@ -71,11 +71,11 @@ public class UserService {
         // Console.WriteLine("Email is : " + email);
         // Console.WriteLine("Password is : " + password);
         
-        Console.WriteLine("Must be false => " + userExists == null);
+        // Console.WriteLine("Must be false => " + userExists == null);
 
         if(userExists == null) {return null;}
 
-        Console.WriteLine("Must be false => " + userExists.password != password);
+        // Console.WriteLine("Must be false => " + userExists.password != password);
 
         Boolean passwordMatches = PasswordHasher.verifyPassword(password, userExists.password);
 
@@ -83,7 +83,7 @@ public class UserService {
 
         Tokens theToken = _tokenService.GetToken(email);
 
-        Console.WriteLine("The token is => " + theToken);
+        // Console.WriteLine("The token is => " + theToken);
 
         return theToken.Token;
 
