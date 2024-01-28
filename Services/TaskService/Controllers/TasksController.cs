@@ -51,15 +51,26 @@ public class TasksController : ControllerBase {
     public async Task<ActionResult<Task>> CreateTask(CreateTaskDTO newTask) {
 
         var principal = HttpContext.User;
-        var claims = principal.Claims;
+        // var claims = principal.Claims;
         var emailClaim = principal.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")!;
+        var nameClaim = principal.Claims.FirstOrDefault(c => c.Type == "name")!;
+        // Console.WriteLine(typeof(principal.Claims));
+        // foreach (Claim claim in principal.Claims)
+        // {
+        //     Console.WriteLine(claim.Type);
+        //     Console.WriteLine(claim.Value);
+        
+        //     // Process claim based on type and value
+        // }
         string email = emailClaim.Value;
-        Console.WriteLine(email);
+        string name = nameClaim.Value;
+        Console.WriteLine(name);
 
         var task = await _tasksService.CreateAsync(newTask, email!);
         TaskCreated taskCreated = new TaskCreated{
             Id = task.Id,
             name = task.name,
+            nameOfUser = name,
             Status = (Events.TaskCreated.StatusOfTask)task.Status,
             createdAt = task.createdAt,
             dueDate = task.dueDate,
@@ -85,6 +96,10 @@ public class TasksController : ControllerBase {
         var updatedTaskData = await _tasksService.GetAsync(id);
 
         await _publishEndpoint.Publish(updatedTask);
+
+        // TaskUpdated updatedTaskEvent = new TaskUpdated{
+
+        // }
 
         return Ok(updatedTaskData);
 

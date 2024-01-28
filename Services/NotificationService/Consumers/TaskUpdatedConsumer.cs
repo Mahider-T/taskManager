@@ -4,10 +4,10 @@ using MongoDB.Entities;
 using NotificationService.Helpers;
 
 namespace NotificationService.Consumers;
-public class TaskCreatedConsumer : IConsumer<TaskCreated>
+public class TaskUpdatedConsumer : IConsumer<TaskUpdated>
 {
     
-    public async Task Consume(ConsumeContext<TaskCreated> taskCreated)
+    public async Task Consume(ConsumeContext<TaskUpdated> taskUpdated)
     {
         // Console.WriteLine(taskCreated == null);
         var email = taskCreated.Message.userId;
@@ -81,7 +81,7 @@ public class TaskCreatedConsumer : IConsumer<TaskCreated>
 
         
         try{
-            var sub = "Task created successfully." ;
+            var sub = "Task updated successfully." ;
             SendEmail.SendEmailMethod(email, sub, body);
         }
         catch(Exception e){
