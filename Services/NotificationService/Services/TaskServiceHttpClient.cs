@@ -14,11 +14,13 @@ namespace NotificationService.Services
             _config = config;
         }
 
-        public async Task<List<Task>> GetTasksForNotificationDB()
+        public async Task<List<Task?>> GetTasksForNotificationDB()
         {
             // _config["TaskServiceUrl"] = 
+            
             return await _httpClient.GetFromJsonAsync<List<Task>>("http://localhost:5154"
                 + "/api/Tasks");
+            
         }
     }
 }
