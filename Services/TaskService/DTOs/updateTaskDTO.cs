@@ -6,7 +6,7 @@ public class updateTaskDTO {
 
     public string? name { get; set; }
 
-    public StatusOfTask? Status { get; set; }
+    public string? Status { get; set;}
 
     public DateTime? dueDate { get ;set; } 
 

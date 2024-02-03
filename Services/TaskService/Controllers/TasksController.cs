@@ -1,6 +1,7 @@
 using TaskManager.Models;
 using TaskManager.Services;
 using TaskManager.DTOs;
+using TaskManager.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using DnsClient.Protocol;
@@ -112,7 +113,7 @@ public class TasksController : ControllerBase {
             oldDueDate = theTask.dueDate,
 
             newName = updatedTaskData.name,
-            newStatus = (Events.StatusOfTask)updatedTask.Status!,
+            newStatus = (Events.StatusOfTask)EnumHelper.EnumParse(updatedTask.Status!,theTask.Status),
             newDueDate = updatedTaskData.dueDate
 
         };
@@ -137,10 +138,19 @@ public class TasksController : ControllerBase {
         if(theTask is null) {
             return NotFound("Could not find a task with the given Id");
         }
-        await _publishEndpoint.Publish(id);
+        var name = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "name")!.Value;
+        TaskDeleted taskDeleted = new TaskDeleted {
+            name = theTask.name,
+            userId = theTask.userId,
+            nameOfUser = name,
+            Status = (Events.StatusOfTask)theTask.Status,
+            createdAt = theTask.createdAt,
+            dueDate = theTask.dueDate
+
+        };
+        await _tasksService.RemoveAsync(id);
+        await _publishEndpoint.Publish(taskDeleted);
         return Ok("Task deleted successfully.");
 
     }
-
-
 }

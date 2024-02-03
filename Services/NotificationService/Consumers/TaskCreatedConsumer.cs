@@ -9,8 +9,8 @@ public class TaskCreatedConsumer : IConsumer<TaskCreated>
     
     public async Task Consume(ConsumeContext<TaskCreated> taskCreated)
     {
-        // Console.WriteLine(taskCreated == null);
         var email = taskCreated.Message.userId;
+        // Console.WriteLine(${email} );
         var name = taskCreated.Message.name;
         var id = taskCreated.Message.Id;
         var status = taskCreated.Message.Status;

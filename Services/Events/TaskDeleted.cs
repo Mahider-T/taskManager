@@ -10,6 +10,6 @@ public class TaskDeleted  {
 
     public DateTime createdAt { get; set; } 
     public DateTime dueDate { get ;set; } 
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    
 
 }

@@ -60,14 +60,18 @@ public class TasksService {
       var updateDefinitionBuilder = Builders<Tasks>.Update;
         var updateDefinitionList = new List<UpdateDefinition<Tasks>>();
 
+        var theTask = await GetAsync(id);
+
         if (updatedTask.name != null)
         {
             updateDefinitionList.Add(updateDefinitionBuilder.Set(x => x.name, updatedTask.name));
         }
 
-        if (updatedTask.Status.HasValue)
+        if (updatedTask.Status != null)
         {
-            updateDefinitionList.Add(updateDefinitionBuilder.Set(x => x.Status, updatedTask.Status));
+            StatusOfTask theStatus = EnumHelper.EnumParse(updatedTask.Status,theTask!.Status)!;
+            // updateDefinitionList.Add(updateDefinitionBuilder.Set(x => x.Status, updatedTask.Status));
+            updateDefinitionList.Add(updateDefinitionBuilder.Set(x => x.Status, theStatus));
         }
 
         if (updatedTask.dueDate.HasValue)
