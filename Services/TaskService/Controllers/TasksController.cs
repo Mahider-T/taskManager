@@ -66,12 +66,12 @@ public class TasksController : ControllerBase {
         string name = nameClaim.Value;
         Console.WriteLine(name);
 
-        var task = await _tasksService.CreateAsync(newTask, email!);
+        var task = await _tasksService.CreateAsync(newTask, email);
         TaskCreated taskCreated = new TaskCreated{
             Id = task.Id,
             name = task.name,
             nameOfUser = name,
-            Status = (Events.TaskCreated.StatusOfTask)task.Status,
+            Status = (Events.TaskCreated.StatusOfTask)task.Status!,
             createdAt = task.createdAt,
             dueDate = task.dueDate,
             userId  = task.userId
@@ -92,10 +92,32 @@ public class TasksController : ControllerBase {
             return NotFound("Could not find a task with the given Id");
         }
 
+        var name = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "name")!.Value;
+
         await _tasksService.UpdateAsync(id, updatedTask);
+
         var updatedTaskData = await _tasksService.GetAsync(id);
 
-        await _publishEndpoint.Publish(updatedTask);
+        if (updatedTaskData is null ) {
+            return NotFound("Could not find the updated version.");
+        }
+
+        TaskUpdated taskUpdated = new TaskUpdated {
+            oldName = theTask.name,
+            userId = theTask.userId,
+            nameOfUser = name,
+            oldStatus = (Events.StatusOfTask)theTask.Status,
+            createdAt = theTask.createdAt,
+            oldDueDate = theTask.dueDate,
+
+            newName = updatedTaskData.name,
+            newStatus = (Events.StatusOfTask)updatedTask.Status!,
+            newDueDate = updatedTaskData.dueDate
+
+        };
+        
+
+        await _publishEndpoint.Publish(taskUpdated);
 
         // TaskUpdated updatedTaskEvent = new TaskUpdated{
 

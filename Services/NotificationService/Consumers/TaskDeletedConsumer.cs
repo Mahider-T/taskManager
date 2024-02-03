@@ -4,24 +4,18 @@ using MongoDB.Entities;
 using NotificationService.Helpers;
 
 namespace NotificationService.Consumers;
-public class TaskUpdatedConsumer : IConsumer<TaskUpdated>
+public class TaskDeletedonsumer : IConsumer<TaskDeleted>
 {
     
-    public async Task Consume(ConsumeContext<TaskUpdated> taskUpdated)
+    public async Task Consume(ConsumeContext<TaskDeleted> taskDeleted)
     {
-        // Console.WriteLine(taskUpdated == null);
-        var email = taskUpdated.Message.userId;
-        var oldName = taskUpdated.Message.oldName;
-        var oldStatus = taskUpdated.Message.oldStatus;
-        var oldDueDate = $"{taskUpdated.Message.oldDueDate.ToString("dd/MM/yyyy")} at {taskUpdated.Message.oldDueDate.TimeOfDay}";
-        var nameOfUser = taskUpdated.Message.nameOfUser;
-        var createdAt = $"{taskUpdated.Message.createdAt.ToString("dd/MM/yyyy")} at {taskUpdated.Message.createdAt.TimeOfDay}";
-
-        var newName = taskUpdated.Message.newName;
-        var newDueDate = $"{taskUpdated.Message.newDueDate.ToString("dd/MM/yyyy")} at {taskUpdated.Message.newDueDate.TimeOfDay}";
-        var newStatus = taskUpdated.Message.newStatus;
-
-
+        // Console.WriteLine(taskCreated == null);
+        var email = taskDeleted.Message.userId;
+        var name = taskDeleted.Message.name;
+        var status = taskDeleted.Message.Status;
+        var dueDate = $"{taskDeleted.Message.dueDate.ToString("dd/MM/yyyy")} at {taskDeleted.Message.dueDate.TimeOfDay}";
+        var nameOfUser = taskDeleted.Message.nameOfUser;
+        var createdAt = $"{taskDeleted.Message.createdAt.ToString("dd/MM/yyyy")} at {taskDeleted.Message.createdAt.TimeOfDay}";
         // var body = $"<h3>Greetings, </h3></br> You just created a task: </br> Task name : <b><u>{name}</u></b> </br> and due date {dueDate}"; 
         var body = $@"
             <html>
@@ -70,12 +64,11 @@ public class TaskUpdatedConsumer : IConsumer<TaskUpdated>
             <body>
                 <div class='email-container'>
                     <p class='email-header'>Greetings, {nameOfUser} </p>
-                    <p>You just updated a task.</p></br>
-                    <p>You can find the updated task details below</p>
-                    <p><span class='task-name'>Task name</span>: {oldName} -> {newName}</p>
-                    <p class='status'><span class='task-name'>Status</span>: {oldStatus} -> {newStatus}</p>
+                    <p>You just deleted a task.</p>
+                    <p><span class='task-name'>Task name</span>: {name}</p>
+                    <p class='status'><span class='task-name'>Status</span>: {status}</p>
                     <p class='created-at'><span class='task-name'>Created at</span>: {createdAt}</p>
-                    <p class='due-date'><span class='task-name'>Due date</span>: {oldDueDate} -> {newDueDate}</p>
+                    <p class='due-date'><span class='task-name'>Due date</span>: {dueDate}</p>
                     <div class='email-footer'>
                         <p>With regards,</p>
                         <p>Task Manager Corp.</p>
@@ -87,13 +80,13 @@ public class TaskUpdatedConsumer : IConsumer<TaskUpdated>
 
         
         try{
-            var sub = "Task updated successfully." ;
+            var sub = "Task deleted successfully." ;
             SendEmail.SendEmailMethod(email, sub, body);
         }
         catch(Exception e){
             Console.WriteLine(e);
 
         }
-        // await taskUpdated.SaveAsync();
+        // await taskDeleted.SaveAsync();
     }
 }

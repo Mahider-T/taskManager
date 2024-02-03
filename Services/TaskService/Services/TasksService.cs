@@ -36,7 +36,7 @@ public class TasksService {
         var tasks = new Tasks
         {
             name = newTask.name,
-            Status = newTask.Status ?? StatusOfTask.Todo, // Use default if Status is null
+            Status = newTask.Status ?? StatusOfTask.Underway, // Use default if Status is null
             dueDate = newTask.dueDate ?? DateTime.UtcNow.AddDays(1), // Use default if dueDate is null
             createdAt = DateTime.UtcNow
         };
