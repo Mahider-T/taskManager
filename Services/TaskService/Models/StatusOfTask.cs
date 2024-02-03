@@ -5,7 +5,7 @@ public enum StatusOfTask {
     Todo ,
     Underway,
     Completed
-}
+};
 // public static class StatusOfTask
 // {
 //     public static readonly string Todo = "Todo";

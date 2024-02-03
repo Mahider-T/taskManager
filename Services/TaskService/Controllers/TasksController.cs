@@ -64,7 +64,8 @@ public class TasksController : ControllerBase {
         // }
         string email = emailClaim.Value;
         string name = nameClaim.Value;
-        Console.WriteLine(name);
+        // Console.WriteLine(name);
+        Console.WriteLine(newTask.Status);
 
         var task = await _tasksService.CreateAsync(newTask, email);
         TaskCreated taskCreated = new TaskCreated{

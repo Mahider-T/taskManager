@@ -3,6 +3,7 @@ using TaskManager.DTOs;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using AutoMapper;
+using TaskManager.Helpers;
 
 namespace TaskManager.Services;
 
@@ -32,11 +33,14 @@ public class TasksService {
         await _tasksCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
     public async Task<Tasks> CreateAsync(CreateTaskDTO newTask, string email){
+        // Console.WriteLine(newTask.Status);
 
         var tasks = new Tasks
         {
+            // ?? StatusOfTask.Underway
             name = newTask.name,
-            Status = newTask.Status ?? StatusOfTask.Underway, // Use default if Status is null
+            // Status = (TaskManager.Models.StatusOfTask)newTask.Status , // Use default if Status is null
+            Status = newTask.Status != null ? EnumHelper.EnumParse(newTask.Status, StatusOfTask.Todo) : StatusOfTask.Todo,
             dueDate = newTask.dueDate ?? DateTime.UtcNow.AddDays(1), // Use default if dueDate is null
             createdAt = DateTime.UtcNow
         };
