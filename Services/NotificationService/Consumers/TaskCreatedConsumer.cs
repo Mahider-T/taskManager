@@ -82,7 +82,7 @@ public class TaskCreatedConsumer : IConsumer<TaskCreated>
         
         try{
             var sub = "Task created successfully." ;
-            SendEmail.SendEmailMethod(email, sub, body);
+            await SendEmail.SendEmailMethod(email, sub, body);
         }
         catch(Exception e){
             Console.WriteLine(e);

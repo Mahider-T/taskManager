@@ -81,7 +81,7 @@ public class TaskDeletedonsumer : IConsumer<TaskDeleted>
         
         try{
             var sub = "Task deleted successfully." ;
-            SendEmail.SendEmailMethod(email, sub, body);
+            await SendEmail.SendEmailMethod(email, sub, body);
         }
         catch(Exception e){
             Console.WriteLine(e);

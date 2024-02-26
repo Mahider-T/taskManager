@@ -6,12 +6,13 @@ using MailKit.Security;
 namespace NotificationService.Helpers;
 
 public class SendEmail{
-    public static void  SendEmailMethod(string email, string subject, string messageBody) {
-        var message = new MimeMessage();
-        message.From.Add(new MailboxAddress("TaskManagerTeam", "mahdertekola@gmail.com"));
-        message.To.Add(new MailboxAddress("", email));
-        message.Subject = subject;
-        message.Body = new TextPart("html"){Text = messageBody};
+    public static async Task<bool> SendEmailMethod(string email, string subject, string messageBody) {
+        await Task.Run(() => {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("TaskManagerTeam", "mahdertekola@gmail.com"));
+            message.To.Add(new MailboxAddress("", email));
+            message.Subject = subject;
+            message.Body = new TextPart("html"){Text = messageBody};
 
          using (var client = new SmtpClient())
         {
@@ -20,5 +21,7 @@ public class SendEmail{
             client.Send(message);
             client.Disconnect(true);
         }
+        });
+        return true;
     }
 }
