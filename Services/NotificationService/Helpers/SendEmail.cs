@@ -9,7 +9,7 @@ public class SendEmail{
     public static async Task<bool> SendEmailMethod(string email, string subject, string messageBody) {
         await Task.Run(() => {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("TaskManagerTeam"));
+            message.From.Add(new MailboxAddress("TaskManagerTeam", "noreply.TaskManager1@gmail.com"));
             message.To.Add(new MailboxAddress("", email));
             message.Subject = subject;
             message.Body = new TextPart("html"){Text = messageBody};
